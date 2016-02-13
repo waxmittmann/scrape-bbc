@@ -5,12 +5,14 @@ from scrapy.selector import HtmlXPathSelector
 
 from scrapymasters.items import GuardianItem
 
+
 class DmozSpider(CrawlSpider):
     name = "guardian"
-    allowed_domains = ["bbc.com"]
-    #start_urls = ["http://127.0.0.1:8742/Guardian_10_02_2016.html"]
+    allowed_domains = ["bbc.com", "localhost"]
+    # start_urls = ["http://127.0.0.1:8742/Guardian_10_02_2016.html"]
     # start_urls = ["http://www.theguardian.com/"]
-    start_urls = ["http://www.bbc.com/"]
+    # start_urls = ["http://www.bbc.com/"]
+    start_urls = ["http://localhost:8090"]
 
     # articles = hxs.xpath("//*[contains(concat(' ', @class, ' '), ' media__content ')]")
     # <div class="media__content">
@@ -44,32 +46,56 @@ class DmozSpider(CrawlSpider):
         # articles = hxs.xpath("//*[contains(concat(' ', @class, ' '), ' fc-item ')]")
         articles = hxs.xpath("//*[contains(concat(' ', @class, ' '), ' media__content ')]")
         for article in articles:
-            item = GuardianItem()
+            # item = GuardianItem()
             print("\n{--\n" + article.extract() + "\n--}\n")
             # item['title'] = article.xpath("//*[contains(concat(' ', @class, ' '), ' fc-item__link ')]/@href").extract()
             # item['url'] = article.xpath("//*[contains(concat(' ', @class, ' '), ' fc-item__link ')]"
             #                                "//*[contains(concat(' ', @class, ' '), ' fc-item__kicker ')]/text()").extract()
 
-            item['title'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/text()") \
-                    .extract(), "").strip(' \n')
-            item['url'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/@href") \
-                    .extract(), "").strip(' \n')
-            item['tags'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__tag ')]/text()") \
-                    .extract(), "").strip(' \n')
-            item['summary'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__summary ')]/text()") \
-                    .extract(), "").strip(' \n')
+            # item['title'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/text()") \
+            #         .extract(), "").strip(' \n')
+            # item['url'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/@href") \
+            #         .extract(), "").strip(' \n')
+            # item['tags'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__tag ')]/text()") \
+            #         .extract(), "").strip(' \n')
+            # item['summary'] = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__summary ')]/text()") \
+            #         .extract(), "").strip(' \n')
+
+            meta_map = {
+                'title': DmozSpider.get_first(
+                    article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/text()") \
+                    .extract(), "").strip(' \n'),
+                'tags': DmozSpider.get_first(
+                    article.xpath("*[contains(concat(' ', @class, ' '), ' media__tag ')]/text()") \
+                    .extract(), "").strip(' \n'),
+                'summary': DmozSpider.get_first(
+                    article.xpath("*[contains(concat(' ', @class, ' '), ' media__summary ')]/text()") \
+                    .extract(), "").strip(' \n')}
+            # url = DmozSpider.get_first(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/@href") \
+            #         .extract(), "").strip(' \n')
+
+            articleUrl = ''.join(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/@href").extract())
+            print("Trying to link: " + ''.join(articleUrl))
+            url = response.urljoin(articleUrl)
+
+            yield scrapy.Request(url, callback=self.parse_dir_contents, meta=meta_map)
 
             # print(item)
-            yield item
+            # yield item
 
-    #class scrapy.http.Request(url[, callback, method='GET', headers, body, cookies, meta, encoding='utf-8', priority=0, dont_filter=False, errback])
-    # def parse_dir_contents(self, response):
-    #     for sel in response.xpath('//ul/li'):
-    #         item = DmozItem()
-    #         item['title'] = sel.xpath('a/text()').extract()
-    #         item['link'] = sel.xpath('a/@href').extract()
-    #         item['desc'] = sel.xpath('text()').extract()
-    #         yield item
+    # class scrapy.http.Request(url[, callback, method='GET', headers, body, cookies, meta, encoding='utf-8', priority=0, dont_filter=False, errback])
+    def parse_dir_contents(self, response):
+        meta_map = response.meta
+
+        header = DmozSpider.get_first(response.xpath("*[contains(concat(' ', @class, ' '), ' story_body__h1 ')]").extract(), "")\
+            .strip(' \n')
+
+        item = GuardianItem()
+        item['title'] = meta_map['title']
+        item['tags'] = meta_map['tags']
+        item['summary'] = meta_map['summary']
+        item['header'] = header
+        yield item
 
     @staticmethod
     def get_first(list, ifEmpty):
