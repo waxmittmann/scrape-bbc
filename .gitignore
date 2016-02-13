@@ -4,3 +4,6 @@ bbcsite
 guardian-articles.json
 crawler-output.json
 guardian-index.json
+
+config.ini
+notes.txt
