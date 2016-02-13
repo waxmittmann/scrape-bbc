@@ -1,5 +1,6 @@
 from string import punctuation
-from scrapymasters.processing.OutputWriter import OutputWriter
+
+from scrapymasters.common.OutputWriter import OutputWriter
 
 
 class IndexerPipeline(object):

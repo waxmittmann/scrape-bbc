@@ -2,6 +2,7 @@
 import web
 from pymongo import MongoClient
 from scrapymasters.common.ConfigFiles import ConfigFiles
+from scrapymasters.common.MongoUtils import MongoUtils
 
 urls = (
     '/articles', 'Articles'
@@ -20,11 +21,13 @@ class Articles:
         self.config = ConfigFiles.config
 
     def GET(self):
-        config = self.config
-        if config.username == "" and config.password == "":
-            client = MongoClient("mongodb://" + config.url + "/" + config.dbname)
-        else:
-            client = MongoClient("mongodb://" + config.username + ":" + config.password + "@" + config.url + "/" + config.dbname)
+        # config = self.config
+        # if config.username == "" and config.password == "":
+        #     client = MongoClient("mongodb://" + config.url + "/" + config.dbname)
+        # else:
+        #     client = MongoClient("mongodb://" + config.username + ":" + config.password + "@" + config.url + "/" + config.dbname)
+
+        client = MongoUtils.create_client_from_config(self.config)
         db = client.scrape
         articles = db.articles.find()
         client.close()
