@@ -11,9 +11,8 @@
 
 BOT_NAME = 'scrapymasters'
 
-SPIDER_MODULES = ['scrapymasters.spiders']
+SPIDER_MODULES = ['scrapymasters.spiders', 'scrapymasters.pipelines']
 NEWSPIDER_MODULE = 'scrapymasters.spiders'
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scrapymasters (+http://www.yourdomain.com)'
@@ -64,6 +63,18 @@ NEWSPIDER_MODULE = 'scrapymasters.spiders'
 #ITEM_PIPELINES = {
 #    'scrapymasters.pipelines.SomePipeline': 300,
 #}
+
+# ITEM_PIPELINES = {
+#    'scrapymasters.pipelines.IndexerPipeline': 1,
+#    'scrapymasters.pipelines.ScrapingPipeline': 2
+# }
+
+# 'scrapymasters.spiders.IndexerPipeline.IndexerPipeline': 1
+
+ITEM_PIPELINES = {
+   'scrapymasters.pipelines.IndexerPipeline.IndexerPipeline': 1
+}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

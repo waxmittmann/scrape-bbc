@@ -6,6 +6,10 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-class ScrapymastersPipeline(object):
+class ScrapingPipeline(object):
+
+    def __init__(self):
+        self.ids_seen = set()
+
     def process_item(self, item, spider):
         return item
