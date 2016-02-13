@@ -1,7 +1,6 @@
-# import cPickle as pickle
-import json
 from string import punctuation
-from scrapymasters.postcrawl.FileWriter import FileWriter
+from scrapymasters.processing.FileWriter import FileWriter
+
 
 class IndexerPipeline(object):
     def __init__(self):
@@ -9,7 +8,6 @@ class IndexerPipeline(object):
         self.articles = []
 
     def process_item(self, article, spider):
-        # print("Brocessing " + article)
         body = article['body']
         for word in body.split():
             word = word.strip(punctuation).lower()
@@ -24,23 +22,12 @@ class IndexerPipeline(object):
         self.articles.append(article)
         return article
 
+    # This doesn't really seem like a good way to write the output (in a random pipeline stage) but actually doing it
+    # as an exporter or something seems harder. Maybe a better alternative would be to add a separate 'final' pipeline
+    # stage that does the article-storing, processing and writing.
     def close_spider(self, spider):
-        # print("Spider closing, here is index:")
-        # for word in self.article_word_index:
-        #     articles = self.article_word_index[word]
-        #     print(word + " -> " + ', '.join(articles))
-        #
-        # with open('guardian-index.json', 'w') as fp:
-        #     json.dump(self.article_word_index, fp)
-
         articles_and_index = {
             'articles': self.articles,
             'index': self.article_word_index
         }
         FileWriter.write_to_file(articles_and_index)
-
-
-        # print("spider.state.items():")
-        # print(spider.state.items())
-            # with open('guardian-index.json', 'wb') as fp:
-            #     pickle.dump(self.article_word_index, fp)
