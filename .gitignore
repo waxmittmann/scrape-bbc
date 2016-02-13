@@ -1,2 +1,4 @@
 .idea
 .bbcsite
+*.pyc
+guardian-articles.json
