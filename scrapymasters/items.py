@@ -14,3 +14,4 @@ class GuardianItem(scrapy.Item):
     tags = Field()
     summary = Field()
     header = Field()
+    body = Field()

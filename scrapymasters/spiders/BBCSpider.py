@@ -1,9 +1,9 @@
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy.selector import HtmlXPathSelector
 
 from scrapymasters.items import GuardianItem
 from scrapymasters.util.stringutil import StringUtil
+from scrapymasters.util.xpathutil import XpathUtil
 
 
 class BBCSpider(CrawlSpider):
@@ -13,35 +13,33 @@ class BBCSpider(CrawlSpider):
     start_urls = ["http://localhost:8090"]
 
     def parse(self, response):
-        hxs = HtmlXPathSelector(response)
-
-        articles = hxs.xpath("//*[contains(concat(' ', @class, ' '), ' media__content ')]")
+        articles = response.xpath("//" + XpathUtil.xpath_for_class('media__content'))
         for article in articles:
             item = GuardianItem()
 
             item['title'] = StringUtil.get_first(
-                    article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/text()") \
-                    .extract(), "").strip(' \n')
+                article.xpath(XpathUtil.xpath_for_class('media__title') + "/a/text()").extract(), "").strip(' \n')
             item['tags'] = StringUtil.get_first(
-                    article.xpath("*[contains(concat(' ', @class, ' '), ' media__tag ')]/text()") \
-                    .extract(), "").strip(' \n')
+                article.xpath(XpathUtil.xpath_for_class('media__tag') + "/text()").extract(), "").strip(' \n')
             item['summary'] = StringUtil.get_first(
-                    article.xpath("*[contains(concat(' ', @class, ' '), ' media__summary ')]/text()") \
-                    .extract(), "").strip(' \n')
+                article.xpath(XpathUtil.xpath_for_class('media__summary') + "/text()").extract(), "").strip(' \n')
 
+            article_url = ''.join(article.xpath(XpathUtil.xpath_for_class("media__title") + "/a/@href").extract())
 
-            articleUrl = ''.join(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/@href").extract())
-
-            url = response.urljoin(articleUrl)
+            url = response.urljoin(article_url)
 
             yield scrapy.Request(url, callback=self.parse_dir_contents, meta=item)
 
     def parse_dir_contents(self, response):
         item = response.meta
 
-        header = StringUtil.get_first(response.xpath("//*[contains(concat(' ', @class, ' '), ' story-body__h1 ')]/text()").extract(), "")\
-            .strip(' \n')
+        header = StringUtil.get_first(
+            response.xpath("//" + XpathUtil.xpath_for_class("story-body__h1") + "/text()").extract(), "").strip(' \n')
+
+        body = StringUtil.get_first(
+            response.xpath("//" + XpathUtil.xpath_for_class("story-body__inner") + "/text()").extract(), "").strip(' \n')
 
         item['header'] = header
         item['url'] = response.url
+        item['body'] = body
         yield item

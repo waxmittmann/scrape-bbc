@@ -6,7 +6,7 @@ class IndexerPipeline(object):
     # vat_factor = 1.15
 
     def __init__(self):
-        self.ids_seen = set()
+        self.article_word_index = {}
 
     def process_item(self, item, spider):
         print("Got: " + str(item))
