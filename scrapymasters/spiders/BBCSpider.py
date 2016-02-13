@@ -1,16 +1,26 @@
 import scrapy
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import CrawlSpider
 
 from scrapymasters.items import GuardianItem
 from scrapymasters.util.stringutil import StringUtil
 from scrapymasters.util.xpathutil import XpathUtil
+from scrapymasters.postcrawl.completeProcessing import CompleteProcessing
+from scrapy import signals
+from scrapy.xlib.pydispatch import dispatcher
+from pprint import pprint
 
+from scrapymasters.postcrawl.Indexer import Indexer
+from scrapymasters.postcrawl.FileWriter import FileWriter
 
 class BBCSpider(CrawlSpider):
     name = "guardian"
     allowed_domains = ["bbc.com", "localhost"]
     # start_urls = ["http://www.bbc.com/"]
     start_urls = ["http://localhost:8090"]
+
+    # def __init__(self):
+    #     CompleteProcessing()
+    #     dispatcher.connect(self.spider_closed, signals.spider_closed)
 
     def parse(self, response):
         articles = response.xpath("//" + XpathUtil.xpath_for_class('media__content'))
@@ -43,3 +53,35 @@ class BBCSpider(CrawlSpider):
         item['url'] = response.url
         item['body'] = body
         yield item
+
+    # def spider_closed(self, spider):
+        # print("Spider done!")
+        # l = dir(spider)
+        # pprint(l)
+
+        # print("State:")
+        # l = dir(spider.state)
+        # pprint(l)
+
+        # print("Items: ")
+        # print(type(spider.state.items()))
+        # l = dir(spider.state.items())
+        # pprint(l)
+
+        # articles = spider.state.items()
+        # index = Indexer.map_bodywords_to_articles(articles)
+        #
+        # print("Articles: ")
+        # print(articles)
+        #
+        # articles_and_index = {
+        #     'articles': articles,
+        #     'index': index
+        # }
+        #
+        # FileWriter.write_to_file(articles_and_index)
+
+        # print(spider.state.get())
+        # print(type(spider.crawler))
+        # l = dir(spider.crawler)
+        # pprint(l)

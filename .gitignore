@@ -1,4 +1,6 @@
 .idea
-.bbcsite
+bbcsite
 *.pyc
 guardian-articles.json
+crawler-output.json
+guardian-index.json
