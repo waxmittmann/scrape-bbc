@@ -44,10 +44,13 @@ class DmozSpider(CrawlSpider):
         print(response)
         hxs = HtmlXPathSelector(response)
         # articles = hxs.xpath("//*[contains(concat(' ', @class, ' '), ' fc-item ')]")
+
+        # print("\n{--\n" + response.body + "\n--}\n")
+
         articles = hxs.xpath("//*[contains(concat(' ', @class, ' '), ' media__content ')]")
         for article in articles:
             # item = GuardianItem()
-            print("\n{--\n" + article.extract() + "\n--}\n")
+            # print("\n{--\n" + article.extract() + "\n--}\n")
             # item['title'] = article.xpath("//*[contains(concat(' ', @class, ' '), ' fc-item__link ')]/@href").extract()
             # item['url'] = article.xpath("//*[contains(concat(' ', @class, ' '), ' fc-item__link ')]"
             #                                "//*[contains(concat(' ', @class, ' '), ' fc-item__kicker ')]/text()").extract()
@@ -75,20 +78,46 @@ class DmozSpider(CrawlSpider):
             #         .extract(), "").strip(' \n')
 
             articleUrl = ''.join(article.xpath("*[contains(concat(' ', @class, ' '), ' media__title ')]/a/@href").extract())
-            print("Trying to link: " + ''.join(articleUrl))
+            # print("Trying to link: " + ''.join(articleUrl))
             url = response.urljoin(articleUrl)
 
+            # print("Look at url " + url)
+
             yield scrapy.Request(url, callback=self.parse_dir_contents, meta=meta_map)
+            # yield scrapy.Request(url, callback=self.parse_dir_contents)
 
             # print(item)
             # yield item
 
     # class scrapy.http.Request(url[, callback, method='GET', headers, body, cookies, meta, encoding='utf-8', priority=0, dont_filter=False, errback])
     def parse_dir_contents(self, response):
-        meta_map = response.meta
+        # response2 = fetch(response)
 
-        header = DmozSpider.get_first(response.xpath("*[contains(concat(' ', @class, ' '), ' story_body__h1 ')]").extract(), "")\
+
+        print("Url: " + response.url)
+        # print(type(response))
+        # print("Reponse Body:")
+        # print(response.body)
+
+        meta_map = response.meta
+        # print("\n{--\n" + response.body + "\n--}\n")
+
+        hxs = HtmlXPathSelector(response)
+
+        print("story_boy__h1:")
+        # print(hxs.xpath("*[contains(concat(' ', @class, ' '), ' story_body__h1 ')]").extract())
+        #story-body__h1
+        print(hxs.xpath("//*[contains(@class, 'story-body__h1')]/text()").extract())
+        # print(hxs.xpath("//div").extract())
+
+        # header = DmozSpider.get_first(hxs.xpath("//*[contains(concat(' ', @class, ' '), ' story_body__h1 ')]").extract(), "")\
+        header = DmozSpider.get_first(hxs.xpath("//*[contains(concat(' ', @class, ' '), ' story-body__h1 ')]/text()").extract(), "")\
             .strip(' \n')
+
+        # print("Here it is: ")
+        # print(hxs.xpath("//*").extract())
+        # header = DmozSpider.get_first(response.xpath("*[contains(concat(' ', @class, ' '), ' story_body__h1 ')]").extract(), "")\
+        #     .strip(' \n')
 
         item = GuardianItem()
         item['title'] = meta_map['title']
