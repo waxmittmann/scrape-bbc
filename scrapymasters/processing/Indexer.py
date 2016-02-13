@@ -2,6 +2,9 @@ from string import punctuation
 
 
 class Indexer:
+    def __init__(self):
+        pass
+
     @staticmethod
     def map_bodywords_to_articles(articles):
         article_word_index = {}

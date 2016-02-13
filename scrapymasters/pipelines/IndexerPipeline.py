@@ -1,5 +1,5 @@
 from string import punctuation
-from scrapymasters.processing.FileWriter import FileWriter
+from scrapymasters.processing.OutputWriter import OutputWriter
 
 
 class IndexerPipeline(object):
@@ -30,4 +30,4 @@ class IndexerPipeline(object):
             'articles': self.articles,
             'index': self.article_word_index
         }
-        FileWriter.write_to_file(articles_and_index)
+        OutputWriter.write_to_file(articles_and_index)

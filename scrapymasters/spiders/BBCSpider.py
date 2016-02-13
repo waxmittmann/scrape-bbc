@@ -1,9 +1,9 @@
 import scrapy
 from scrapy.spiders import CrawlSpider
-
 from scrapymasters.items import GuardianItem
 from scrapymasters.util.stringutil import StringUtil
 from scrapymasters.util.xpathutil import XpathUtil
+
 
 class BBCSpider(CrawlSpider):
     name = "guardian"
