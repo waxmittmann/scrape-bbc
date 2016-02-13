@@ -1,17 +1,10 @@
 import json
 from pymongo import MongoClient
-import ConfigParser
-import urllib
+from scrapymasters.common.ConfigFiles import ConfigFiles
 
 class OutputWriter:
     def __init__(self):
-        config = ConfigParser.ConfigParser()
-        config.read("config.ini")
-
-        self.url = config.get("Mongo", "url")
-        self.username = config.get("Mongo", "username")
-        self.password = config.get("Mongo", "password")
-        self.dbname = config.get("Mongo", "dbname")
+        self.config = ConfigFiles.config()
 
     @staticmethod
     def write_to_file(data):
@@ -20,7 +13,12 @@ class OutputWriter:
 
     def write_to_mongo(self, data):
         print("Beginning mongo write")
-        client = MongoClient("mongodb://" + self.username + ":" + self.password + "@" + self.url + "/" + self.dbname)
+        config = self.config
+        if config["username"] == "" and config["password"] == "":
+            client = MongoClient("mongodb://" + config["url"] + "/" + config["dbname"])
+        else:
+            client = MongoClient("mongodb://" + config["username"] + ":" + config["password"] + "@" + config["url"]
+                                 + "/" + config["dbname"])
         db = client.scrape
         db.articles.insert_one(data)
         client.close()

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import web
+from pymongo import MongoClient
+from scrapymasters.common.ConfigFiles import ConfigFiles
 
 urls = (
     '/articles', 'Articles'
@@ -15,10 +17,19 @@ app = web.application(urls, globals())
 
 class Articles:
     def __init__(self):
-        pass
+        self.config = ConfigFiles.config
 
     def GET(self):
-        return "getting articles"
+        config = self.config
+        if config.username == "" and config.password == "":
+            client = MongoClient("mongodb://" + config.url + "/" + config.dbname)
+        else:
+            client = MongoClient("mongodb://" + config.username + ":" + config.password + "@" + config.url + "/" + config.dbname)
+        db = client.scrape
+        articles = db.articles.find()
+        client.close()
+        return articles
+        # return "getting articles"
 
     def PUT(self):
         return "putting articles"
