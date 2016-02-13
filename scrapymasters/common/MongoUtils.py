@@ -1,4 +1,3 @@
-import ConfigParser
 from pymongo import MongoClient
 
 
