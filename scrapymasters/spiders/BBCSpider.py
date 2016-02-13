@@ -36,23 +36,8 @@ class BBCSpider(CrawlSpider):
         header = StringUtil.get_first(
             response.xpath("//" + XpathUtil.xpath_for_class("story-body__h1") + "/text()").extract(), "").strip(' \n')
 
-        # print("Body is: <{--")
-        # print(response.xpath("//" + XpathUtil.xpath_for_class("story-body__inner") + "//p/text()").extract())
-        # print("Body is: --}>")
-        # body = StringUtil.get_first(
-        #     response.xpath(XpathUtil.xpath_for_class("story-body__inner") + "//p/text()").extract(), "").strip(' \n')
-        bodyList = response.xpath("//" + XpathUtil.xpath_for_class("story-body__inner") + "//p/text()").extract()
-        # body = ' '.join(bodyList)
-        body = ' '.join(bodyList).strip(' \n')
-        # body = StringUtil.get_first(bodyList, "").strip(' \n')
-
-        # print("Body is: <{--")
-        # print(body)
-        # print(type(body))
-        # print("Body is: --}>")
-        # if body.len() > 0:
-        #     print("Got body!" + body)
-
+        body_list = response.xpath("//" + XpathUtil.xpath_for_class("story-body__inner") + "//p/text()").extract()
+        body = ' '.join(body_list).strip(' \n')
 
         item['header'] = header
         item['url'] = response.url
