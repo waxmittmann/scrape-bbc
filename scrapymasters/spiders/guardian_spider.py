@@ -62,6 +62,15 @@ class DmozSpider(CrawlSpider):
             # print(item)
             yield item
 
+    #class scrapy.http.Request(url[, callback, method='GET', headers, body, cookies, meta, encoding='utf-8', priority=0, dont_filter=False, errback])
+    # def parse_dir_contents(self, response):
+    #     for sel in response.xpath('//ul/li'):
+    #         item = DmozItem()
+    #         item['title'] = sel.xpath('a/text()').extract()
+    #         item['link'] = sel.xpath('a/@href').extract()
+    #         item['desc'] = sel.xpath('text()').extract()
+    #         yield item
+
     @staticmethod
     def get_first(list, ifEmpty):
         if len(list) > 0:
