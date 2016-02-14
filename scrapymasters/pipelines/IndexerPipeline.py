@@ -1,6 +1,6 @@
 from string import punctuation
-
 from scrapymasters.common.OutputWriter import OutputWriter
+import datetime
 
 
 class IndexerPipeline(object):
@@ -32,7 +32,8 @@ class IndexerPipeline(object):
     def close_spider(self, spider):
         articles_and_index = {
             'articles': self.articles,
-            'index': self.article_word_index
+            'index': self.article_word_index,
+            'time': str(datetime.datetime.now()),
         }
         self.outputWriter.write_to_file(articles_and_index)
         self.outputWriter.write_to_mongo(articles_and_index)

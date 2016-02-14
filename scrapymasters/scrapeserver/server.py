@@ -58,3 +58,28 @@ class Articles:
 
 if __name__ == "__main__":
     app.run()
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# Get article by url
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# db.articles.aggregate([
+#     {$unwind : "$articles"},
+#     {$match : {"articles.url" : "http://localhost:8090/world-latin-america-35565085.html"}},
+#     {$project : {_id : 0,
+#                  url : "$articles.url",
+#                  body : "$articles.body",
+#                  tags : "$articles.tags",
+#                  summary : "$articles.summary",
+#                  title : "$articles.title"}}
+# ])
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
+# "index": {
+#   "limited": ["http://localhost:8090/world-australia-35339947.html"],
+#   "leighton": ["http://localhost:8090/in-pictures-35472652.html"],
+#   "teleconnection": ["http://localhost:8090/science-environment-35566151.html"], }

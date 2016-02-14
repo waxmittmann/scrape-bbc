@@ -8,8 +8,8 @@ class ConfigFiles:
     @staticmethod
     def config():
         config = ConfigParser.ConfigParser()
-        config.read("local_config.ini")
-        # config.read("config.ini")
+        config.read("local_config.cfg")
+        # config.read("config.cfg")
 
         config = {
             'url': config.get("Mongo", "url"),
