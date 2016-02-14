@@ -19,14 +19,11 @@ class MongoWriterPipeline(object):
             "body": article["body"],
         }
 
-        print("Updating...")
-        # self.db.articles.update({"url": article["url"]}, stripped_article, upsert=True)
-        # self.bulk.find({"url": article["url"]}).upsert().update(stripped_article)
         self.bulk.insert(stripped_article)
-        print("Updated...")
         return article
 
     def close_spider(self, spider):
         result = self.bulk.execute()
+        print("Article write result:")
         print(result)
         self.client.close()

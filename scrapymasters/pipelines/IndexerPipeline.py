@@ -19,16 +19,11 @@ class IndexerPipeline(object):
                 url = article['url']
                 word_query = { "word": word }
                 url_to_insert = {"$addToSet": {"urls": url }}
-                print("Updating word...")
-                # self.db.words.update(word_query, url_to_insert, upsert=True, multi=True)
-                # self.bulk.find(word_query).upsert().update(url_to_insert)
                 self.bulk.find(word_query).update(url_to_insert)
-                print("Updated word...")
-
         return article
 
     def close_spider(self, spider):
         result = self.bulk.execute()
+        print("Index write results:")
         print(result)
         self.client.close()
-        print("Closing spiderino")
