@@ -1,4 +1,5 @@
 import scrapy
+import os; print(os.getcwd())
 from scrapy.spiders import CrawlSpider
 from scrapymasters.items import GuardianItem
 from scrapymasters.util.stringutil import StringUtil
@@ -6,7 +7,7 @@ from scrapymasters.util.xpathutil import XpathUtil
 
 
 class BBCSpider(CrawlSpider):
-    name = "guardian"
+    name = "bbc"
     allowed_domains = ["bbc.com", "localhost"]
     # start_urls = ["http://www.bbc.com/"]
     start_urls = ["http://localhost:8090"]

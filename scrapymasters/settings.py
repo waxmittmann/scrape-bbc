@@ -11,7 +11,7 @@
 
 BOT_NAME = 'scrapymasters'
 
-SPIDER_MODULES = ['scrapymasters.spiders', 'scrapymasters.pipelines', 'scrapymasters.common', 'scrapymasters.scrapeserver',
+SPIDER_MODULES = ['scrapymasters.spiders', 'scrapymasters.pipelines', 'scrapymasters.common',
                   'scrapymasters.processing', 'scrapymasters.util']
 NEWSPIDER_MODULE = 'scrapymasters.spiders'
 

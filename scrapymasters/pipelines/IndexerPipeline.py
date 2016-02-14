@@ -24,3 +24,4 @@ class IndexerPipeline(object):
 
     def close_spider(self, spider):
         self.client.close()
+        print("Closing spiderino")
