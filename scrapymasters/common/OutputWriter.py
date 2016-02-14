@@ -3,6 +3,7 @@ from scrapymasters.common.ConfigFiles import ConfigFiles
 from scrapymasters.common.MongoUtils import MongoUtils
 
 
+# Todo: Consider removing this
 class OutputWriter:
     def __init__(self):
         self.config = ConfigFiles.config()

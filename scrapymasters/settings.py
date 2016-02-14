@@ -73,9 +73,8 @@ NEWSPIDER_MODULE = 'scrapymasters.spiders'
 # 'scrapymasters.spiders.IndexerPipeline.IndexerPipeline': 1
 
 ITEM_PIPELINES = {
-   # 'scrapymasters.pipelines.IndexerPipeline.IndexerPipeline': 1
     'scrapymasters.pipelines.MongoWriterPipeline.MongoWriterPipeline': 1,
-    'scrapymasters.pipelines.Indexer2Pipeline.Indexer2Pipeline': 2,
+    'scrapymasters.pipelines.IndexerPipeline.IndexerPipeline': 2,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
