@@ -40,9 +40,7 @@ from scrapymasters.common.MongoUtils import MongoUtils
 # from common.MongoUtils import MongoUtils
 
 urls = (
-    '/words/(.+)', 'WordsGetOne',
-    '/articles', 'Articles',
-    '/words', 'Words',
+    '/articles', 'Articles'
     # '/users/(.*)', 'get_user'
 )
 
@@ -58,38 +56,14 @@ class Articles:
         self.config = ConfigFiles.config()
 
     def GET(self):
-        print("Doing Articles")
         client = MongoUtils.create_client_from_config(self.config)
         db = client.scrape
-        articles = MongoUtils.find_all_articles(db)
+        articles = db.articles.find()
         client.close()
         return articles
 
-
-class WordsGetOne:
-    def __init__(self):
-        self.config = ConfigFiles.config()
-
-    def GET(self, word):
-        print("Doing WordsGetOne")
-        client = MongoUtils.create_client_from_config(self.config)
-        db = client.scrape
-        articles = MongoUtils.find_article_by_word(db, word)
-        client.close()
-        return articles
-
-
-class Words:
-    def __init__(self):
-        self.config = ConfigFiles.config()
-
-    def GET(self):
-        print("Doing Words")
-        client = MongoUtils.create_client_from_config(self.config)
-        db = client.scrape
-        words = MongoUtils.find_all_words(db)
-        client.close()
-        return words
+    def PUT(self):
+        return "putting articles"
 
 # class get_user:
 #     def GET(self, user):

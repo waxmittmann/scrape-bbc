@@ -62,6 +62,7 @@ class Articles:
         client = MongoUtils.create_client_from_config(self.config)
         db = client.scrape
         articles = MongoUtils.find_all_articles(db)
+        # articles = db.articles.find()
         client.close()
         return articles
 
@@ -88,6 +89,7 @@ class Words:
         client = MongoUtils.create_client_from_config(self.config)
         db = client.scrape
         words = MongoUtils.find_all_words(db)
+        # words = db.words.find()
         client.close()
         return words
 
