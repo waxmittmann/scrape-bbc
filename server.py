@@ -4,9 +4,9 @@ from scrapymasters.common.ConfigFiles import ConfigFiles
 from scrapymasters.common.MongoUtils import MongoUtils
 
 urls = (
-    '/words/(.+)', 'WordsGetOne',
+    '/articles/words/(.+)', 'WordsGetOne',
     '/articles', 'Articles',
-    '/words', 'Words',
+    '/articles/words', 'Words',
 )
 
 app = web.application(urls, globals())

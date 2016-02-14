@@ -9,8 +9,8 @@ from scrapymasters.util.xpathutil import XpathUtil
 class BBCSpider(CrawlSpider):
     name = "bbc"
     allowed_domains = ["bbc.com", "localhost"]
-    # start_urls = ["http://www.bbc.com/"]
-    start_urls = ["http://localhost:8090"]
+    start_urls = ["http://www.bbc.com/"]
+    # start_urls = ["http://localhost:8090"]
 
     def parse(self, response):
         articles = response.xpath("//" + XpathUtil.xpath_for_class('media__content'))
