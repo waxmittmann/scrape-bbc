@@ -22,6 +22,11 @@ and index rather than overwriting them. In prod, the spider could be run every d
 In terms of cleaning the page of ads, that did not seem necessary as the crawler uses xpath to extract the body of articles
 which appear clear of advertising content.
 
+To use the spider in 'local' mode, a server should be serving up a local version of the bbc website at localhost:8090.
+I use http-server to serve the local site, and I used a Firefox plugin to download the site (following to a depth of
+one link) but the result turned out to be too large to include in the repo. A remaining todo is to see whether clearing
+out irrelevant content such as images will make the size more manageable for the repo.
+
 My python skills are fairly rudimentary, so pardon any non-idiomatic use.
 Tests are still on the TODO list.
 

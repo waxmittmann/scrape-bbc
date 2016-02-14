@@ -14,7 +14,8 @@ class ConfigFiles:
             'url': config.get("Mongo", "url"),
             'username': config.get("Mongo", "username"),
             'password': config.get("Mongo", "password"),
-            'dbname': config.get("Mongo", "dbname")
+            'dbname': config.get("Mongo", "dbname"),
+            'scrapeUrl': config.get("Scrape", "url"),
         }
         return config
 

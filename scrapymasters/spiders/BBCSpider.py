@@ -4,13 +4,13 @@ from scrapy.spiders import CrawlSpider
 from scrapymasters.items import GuardianItem
 from scrapymasters.util.stringutil import StringUtil
 from scrapymasters.util.xpathutil import XpathUtil
-
+from scrapymasters.common.ConfigFiles import ConfigFiles
 
 class BBCSpider(CrawlSpider):
     name = "bbc"
     allowed_domains = ["bbc.com", "localhost"]
-    start_urls = ["http://www.bbc.com/"]
-    # start_urls = ["http://localhost:8090"]
+    config = ConfigFiles.config()
+    start_urls = [config.get("scrapeUrl")]
 
     def parse(self, response):
         articles = response.xpath("//" + XpathUtil.xpath_for_class('media__content'))
