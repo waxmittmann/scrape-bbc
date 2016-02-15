@@ -2,8 +2,8 @@ import scrapy
 import os; print(os.getcwd())
 from scrapy.spiders import CrawlSpider
 from scrapymasters.items import GuardianItem
-from scrapymasters.util.stringutil import StringUtil
-from scrapymasters.util.xpathutil import XpathUtil
+from scrapymasters.util.StringUtil import StringUtil
+from scrapymasters.util.XPathUtil import XpathUtil
 from scrapymasters.common.ConfigFiles import ConfigFiles
 
 class BBCSpider(CrawlSpider):
