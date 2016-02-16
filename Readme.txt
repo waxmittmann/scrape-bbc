@@ -27,8 +27,11 @@ I use http-server to serve the local site, and I used a Firefox plugin to downlo
 one link) but the result turned out to be too large to include in the repo. A remaining todo is to see whether clearing
 out irrelevant content such as images will make the size more manageable for the repo.
 
-My python skills are fairly rudimentary, so pardon any non-idiomatic use.
-Tests are still on the TODO list.
+My python skills are fairly rudimentary, so pardon any non-idiomatic use. Due to time limitations the test suite is far
+smaller than I would like, for production code I would usually unit test each class and then do at least one end-to-end
+test, and usually also some smaller integration tests between the more important components. If I get the time I'll add
+some more tests over the coming days; my unfamiliarity with Python and the test framework have made the work a bit tougher
+(still haven't figured out how to mock a 'self' reference, even with unittest's @patch.
 
 
 Usage
@@ -42,6 +45,8 @@ Usage
 - Run the crawler: crawlBBC
 
 - Run the server: startServer
+
+- Run the tests:
 
 - RESTful calls:
 > GET http://localhost:8091/articles
